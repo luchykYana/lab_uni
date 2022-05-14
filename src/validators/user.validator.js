@@ -6,8 +6,8 @@ export const UserValidator = Joi.object({
         .min(2)
         .max(20)
         .pattern(new RegExp('[a-z0-9]+@[a-z]+\\.[a-z]{2,3}'))
-        .required()
         .trim()
+        .required()
         .messages({
             'string.empty': 'поле є обов\'язковим для заповнення',
             'string.min': 'мінімальна кількість символів 2',
@@ -54,4 +54,4 @@ export const UserValidator = Joi.object({
             'string.min': 'мінімальна кількість символів 10',
             'string.max': 'максимальна кількість символів 300',
         }),
-});
+})

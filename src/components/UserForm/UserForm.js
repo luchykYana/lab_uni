@@ -1,14 +1,26 @@
 import {Alert, Button, Form, FormControl, InputGroup} from 'react-bootstrap';
 import {joiResolver} from '@hookform/resolvers/joi';
 import {useForm} from 'react-hook-form';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {UserValidator} from '../../validators';
+import {createUserThunk} from '../../store';
+import userReducer from '../../store/user.slice';
 
 const UserForm = ({user, setUser}) => {
+    const dispatch = useDispatch();
+    const {error} = useSelector(state => state['userReducer']);
+
     const [formError, setFormError] = useState({});
     const [noAvatar, setNoAvatar] = useState(false);
     const [success, setSuccess] = useState(false);
+
+    useEffect(() => {
+        fetch('https://random.dog/woof.json?ref=apilist.fun')
+            .then(response => response.json())
+            .then(value => console.log(value.url))
+    })
 
     const {
         register,
@@ -20,13 +32,13 @@ const UserForm = ({user, setUser}) => {
         try {
             if (user.avatar === '') {
                 setNoAvatar(true);
-                setUser({...user, info: aboutUser});
+                setUser({...user, ...aboutUser});
             } else {
-                setUser({...user, info: aboutUser});
+                setUser({...user, ...aboutUser});
                 setNoAvatar(false);
                 setSuccess(true);
 
-                localStorage.setItem('user', JSON.stringify(user));
+                dispatch(createUserThunk({...user, ...aboutUser}));
             }
         } catch (e) {
             setFormError(e.response.data);
@@ -95,7 +107,7 @@ const UserForm = ({user, setUser}) => {
             </Form.Group>
 
             <Button variant="primary" type='submit'>
-                Submit
+                Sign up
             </Button>
 
             <Button className={'btn-link text-white mx-3'} href={'https://www.chess.com/learn-how-to-play-chess'}
@@ -108,7 +120,8 @@ const UserForm = ({user, setUser}) => {
             </Button>
 
             {noAvatar && <Alert variant={'danger'} className={'mt-3'}>You forgot choose avatar</Alert>}
-            {success && <Alert variant={'success'} className={'mt-3'}>You successfully sing up!</Alert>}
+            {!error && success && <Alert variant={'success'} className={'mt-3'}>You successfully sing up!</Alert>}
+            {error && <Alert variant={'danger'} className={'mt-3'}>{error}</Alert>}
 
         </Form>
     );

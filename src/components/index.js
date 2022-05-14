@@ -6,3 +6,4 @@ export * from './Layout/Layout';
 export * from './Time/Time';
 export * from './Timer/Timer';
 export * from './UserForm/UserForm';
+export * from './UserInfo/UserInfo';

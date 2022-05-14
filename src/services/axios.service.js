@@ -2,8 +2,12 @@ import {urls} from '../configs';
 
 const axios = require('axios');
 
+const axiosUserService = axios.create({
+    baseURL: urls.baseURL
+});
+
 const axiosAvatarService = axios.create({
     baseURL: urls.avatarUrl
 });
 
-export default axiosAvatarService;
+export {axiosAvatarService, axiosUserService};

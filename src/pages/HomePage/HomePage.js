@@ -4,7 +4,7 @@ import {useState} from 'react';
 import {Avatar, UserForm} from '../../components';
 
 const HomePage = () => {
-    const [user, setUser] = useState({avatar: '', info: {}});
+    const [user, setUser] = useState({avatar: ''});
 
     return (
         <Container>
